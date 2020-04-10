@@ -34,9 +34,17 @@ Directives.prototype.getOptions = function (binding) {
 
 Directives.prototype.getThenCallback = function (binding, el) {
 	if (binding.value && binding.value.ok) {
-		return dialog => binding.value.ok({ ...dialog, node: el })
+		return dialog => {
+			if(!dialog.success){
+				return this.getCatchCallback(binding)
+			}
+			return binding.value.ok({ ...dialog, node: el })
+		}
 	} else {
 		return dialog => {
+			if(!dialog.success){
+				return this.getCatchCallback(binding)
+			}
 			// If we got here, it means the default action is to be executed
 			// We'll then stop the loader if it's enabled and close the dialog
 			dialog.loading && dialog.close()
@@ -67,12 +75,10 @@ Directives.prototype.clickHandler = function (event, el, binding) {
 	let options = this.getOptions(binding)
 	let confirmMessage = this.getConfirmMessage(binding)
 	let thenCallback = this.getThenCallback(binding, el)
-	let catchCallback = this.getCatchCallback(binding)
 
 	this.Vue.dialog
 		.confirm(confirmMessage, options)
 		.then(thenCallback)
-		.catch(catchCallback)
 }
 
 Directives.prototype.defineConfirm = function () {
