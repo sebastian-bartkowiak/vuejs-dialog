@@ -21,12 +21,6 @@
                 registeredViews: {}
             }
         },
-        created() {
-            document.addEventListener('keydown', this.escapeKeyListener)
-        },
-        destroyed() {
-            document.removeEventListener('keydown', this.escapeKeyListener)
-        },
         watch: {
             'dialogsARR': {
                 handler (dialogs) {
@@ -38,8 +32,8 @@
                     }
 
                     if (dialogs.length && !body.classList.contains(clsName)) {
-                        body.classList.add(clsName)
-                    } else if (!dialogs.length && body && body.classList.contains(clsName)) {
+                        //body.classList.add(clsName)
+                    } else if (!dialogs.length && body.classList.contains(clsName)) {
                         body.classList.remove(clsName)
                     }
                 }
@@ -59,21 +53,8 @@
                 if (dialogIndex !== -1) {
                     this.$delete(this.dialogsARR, dialogIndex)
                 }
-            },
-            escapeKeyListener(e){
-                if (e.keyCode !== 27) return
-
-                let dialogIndex = (-1 + this.dialogsARR.length)
-
-                if(dialogIndex > -1){
-                    this.$set(this.dialogsARR[dialogIndex], 'escapeKeyClose', true)
-                }
             }
         },
         components: {DialogWindow}
     }
 </script>
-
-<style lang="scss">
-    @import '../styles/main';
-</style>

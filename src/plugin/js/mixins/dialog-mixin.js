@@ -72,12 +72,14 @@ export default {
 			if (this.loaderEnabled) {
 				this.switchLoadingState(true)
 				this.options.promiseResolver({
+					success: true,
 					close: this.close,
 					loading: this.switchLoadingState,
 					data: withData
 				})
 			} else {
 				this.options.promiseResolver({
+					success: true,
 					data: withData
 				})
 				this.close()

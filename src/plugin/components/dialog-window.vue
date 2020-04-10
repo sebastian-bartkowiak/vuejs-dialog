@@ -1,23 +1,8 @@
 <template>
-    <div :class="options.customClass">
-        <transition name="dg-backdrop" appear @after-leave="animationEnded('backdrop')">
-            <div v-if="show" class="dg-backdrop"></div>
-        </transition>
-
-        <transition :name="animation" @after-leave="animationEnded('content')" appear>
-            <div v-if="show" :class="['dg-container', {'dg-container--has-input': (isHardConfirm || isPrompt)}]" @click="closeAtOutsideClick" >
-                <div class="dg-content-cont dg-content-cont--floating">
-                    <div class="dg-main-content" @click.stop>
-                        <component :is="dialogView" :options="options" @close="close"></component>
-                    </div>
-                </div>
-            </div>
-        </transition>
-    </div>
+    <component :is="dialogView" :options="options" @close="close"></component>
 </template>
 
 <script>
-    import DefaultView from './views/default-view.vue'
     import {DIALOG_TYPES, ANIMATION_TYPES, CONFIRM_TYPES} from '../js/constants'
 
     export default {
@@ -49,23 +34,20 @@
                 if(val === true){
                     this.cancelBtnDisabled ? this.proceed() : this.cancel()
                 }
+            },
+            show(){
+                this.options.promiseResolver({
+                    success: false
+                })
+                this.$emit('close', this.options.id)
             }
         },
         computed: {
-            animation(){
-                let a = this.options.animation.toUpperCase()
-                return ANIMATION_TYPES.hasOwnProperty(a)
-                    ? ANIMATION_TYPES[a]
-                    : ANIMATION_TYPES.ZOOM
-            },
             loaderEnabled(){
                 return !!this.options.loader
             },
             dialogView(){
-                const customView = this.options.view 
-                ? this.registeredViews[this.options.view] 
-                : null
-                return customView || DefaultView
+                return this.registeredViews[this.options.view]
             },
             isHardConfirm () {
                 return this.options.window === DIALOG_TYPES.CONFIRM &&
@@ -85,11 +67,14 @@
                 if (this.loaderEnabled) {
                     this.switchLoadingState(true)
                     this.options.promiseResolver({
+                        success: true,
                         close: this.close,
                         loading: this.switchLoadingState
                     })
                 } else {
-                    this.options.promiseResolver(true)
+                    this.options.promiseResolver({
+                        success: true
+                    })
                     this.close()
                 }
             },
@@ -101,16 +86,6 @@
             close(){
                 this.show = false
                 this.closed = true
-            },
-            animationEnded(type){
-                this.endedAnimations.push(type)
-
-                if(this.endedAnimations.indexOf('backdrop') !== -1
-                    && this.endedAnimations.indexOf('content') !== -1
-                ){
-                    this.options.promiseRejecter(false)
-                    this.$emit('close', this.options.id)
-                }
             }
         },
         beforeDestroy(){
