@@ -61,6 +61,13 @@ Plugin.prototype.destroy = function () {
 	}
 }
 
+Plugin.prototype.closeByCustomId = function (customId) {
+	if (this.mounted === true) {
+		return this.$root.closeCustomId(customId)
+	}
+	return false
+}
+
 Plugin.prototype.alert = function (message = null, options = {}) {
 	message && (options.message = message)
 	return this.open(DIALOG_TYPES.ALERT, options)
@@ -76,14 +83,26 @@ Plugin.prototype.confirm = function (message = null, options = {}) {
 	return this.open(DIALOG_TYPES.CONFIRM, options)
 }
 
+Plugin.prototype.event = function (message = null, options = {}) {
+	message && (options.message = message)
+	if(typeof options.eventData !== 'undefined' && typeof options.eventData.button_url !== 'undefined') options.cancelText = $trans('Dismiss')
+	return this.open(DIALOG_TYPES.EVENT, options)
+}
+
 Plugin.prototype.open = function (type, localOptions = {}) {
 	this.mountIfNotMounted()
 	return new Promise((resolve, reject) => {
 		localOptions.id = 'dialog.' + Date.now()
+		if(typeof localOptions.customId !== 'undefined'){
+			localOptions.customId = type + '_' + localOptions.customId
+		}
+		else{
+			localOptions.customId = 'static_' + type + '_' + localOptions.id
+		}
 		localOptions.window = type
 		localOptions.promiseResolver = resolve
 		localOptions.promiseRejecter = reject
-
+		
 		this.$root.commit(mergeObjs(this.globalOptions, localOptions))
 	})
 }

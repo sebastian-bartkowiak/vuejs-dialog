@@ -7,7 +7,7 @@ import { DIALOG_TYPES, CONFIRM_TYPES } from '../constants'
 export default {
 	computed: {
 		cancelBtnDisabled () {
-			return (this.options.window === DIALOG_TYPES.ALERT)
+			return (this.options.window === DIALOG_TYPES.ALERT || (this.options.window === DIALOG_TYPES.EVENT && (typeof this.options.eventData === 'undefined' || typeof this.options.eventData.button_url === 'undefined')))
 		},
 		okBtnDisabled () {
 			return (this.options.window === DIALOG_TYPES.CONFIRM) &&

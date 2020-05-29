@@ -41,7 +41,6 @@
         },
         methods: {
             commit(data){
-                data.escapeKeyClose = false
                 this.dialogsARR.push(data)
             },
             forceCloseAll() {
@@ -53,6 +52,16 @@
                 if (dialogIndex !== -1) {
                     this.$delete(this.dialogsARR, dialogIndex)
                 }
+            },
+            closeCustomId(customId){
+                let dialogIndex = firstIndex(this.dialogsARR, customId, 'customId')
+
+                if (dialogIndex !== -1) {
+                    this.dialogsARR[dialogIndex].promiseRejecter({graceful: true})
+                    this.$delete(this.dialogsARR, dialogIndex)
+                    return true
+                }
+                return false
             }
         },
         components: {DialogWindow}

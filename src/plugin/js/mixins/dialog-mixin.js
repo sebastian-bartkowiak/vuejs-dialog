@@ -33,6 +33,9 @@ export default {
 		isPrompt () {
 			return (this.options.window === DIALOG_TYPES.PROMPT)
 		},
+		isEvent () {
+			return (this.options.window === DIALOG_TYPES.EVENT)
+		},
 		leftBtnComponent () {
 			return (this.options.reverse === false) ? 'cancel-btn' : 'ok-btn'
 		},

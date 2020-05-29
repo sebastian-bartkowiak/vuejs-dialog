@@ -56,6 +56,9 @@
             isPrompt () {
                 return (this.options.window === DIALOG_TYPES.PROMPT)
             },
+            isEvent () {
+                return (this.options.window === DIALOG_TYPES.EVENT)
+            },
         },
         methods: {
             closeAtOutsideClick() {

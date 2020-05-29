@@ -2,7 +2,8 @@
 export const DIALOG_TYPES = {
 	ALERT: 'alert', // ex: Congrats! record created
 	CONFIRM: 'confirm', // ex: Please confirm delete
-	PROMPT: 'prompt' // ex: Type your password to save changes
+	PROMPT: 'prompt', // ex: Type your password to save changes
+	EVENT: 'event' // custom event modal
 }
 
 export const CONFIRM_TYPES = {
