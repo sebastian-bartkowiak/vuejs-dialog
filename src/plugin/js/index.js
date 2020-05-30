@@ -68,6 +68,13 @@ Plugin.prototype.closeByCustomId = function (customId) {
 	return false
 }
 
+Plugin.prototype.getLastCustomId = function () {
+	if (this.mounted === true) {
+		return this.$root.getLastCustomId()
+	}
+	return undefined
+}
+
 Plugin.prototype.alert = function (message = null, options = {}) {
 	message && (options.message = message)
 	return this.open(DIALOG_TYPES.ALERT, options)

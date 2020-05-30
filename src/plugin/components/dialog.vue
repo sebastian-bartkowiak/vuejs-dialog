@@ -62,6 +62,12 @@
                     return true
                 }
                 return false
+            },
+            getLastCustomId(){
+                if(!!this.dialogsARR.length)
+                    return this.dialogsARR[this.dialogsARR.length - 1].customId;
+                
+                return undefined;
             }
         },
         components: {DialogWindow}
