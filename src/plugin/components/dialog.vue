@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="dialog-container">
         <dialog-window v-for="dialog in dialogsARR"
                        :options="dialog"
                        :key="dialog.id"
