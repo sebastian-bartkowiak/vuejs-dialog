@@ -68,6 +68,27 @@
                     return this.dialogsARR[this.dialogsARR.length - 1].customId;
                 
                 return undefined;
+            },
+            getOpenCount(){
+                var ret = {
+                    alert: 0,
+                    confirm: 0,
+                    prompt: 0,
+                    event: 0,
+                    total: 0
+                }
+                
+                for(var dialog of this.dialogsARR){
+                    ret.total ++;
+                    switch(dialog.window){
+                        case 'alert': ret.alert++; break;
+                        case 'confirm': ret.confirm++; break;
+                        case 'prompt': ret.prompt++; break;
+                        case 'event': ret.event++; break;
+                    }
+                }
+                
+                return ret;
             }
         },
         components: {DialogWindow}

@@ -75,6 +75,19 @@ Plugin.prototype.getLastCustomId = function () {
 	return undefined
 }
 
+Plugin.prototype.getOpenCount = function () {
+	if (this.mounted === true) {
+		return this.$root.getOpenCount()
+	}
+	return {
+		'alert': 0,
+		'confirm': 0,
+		'prompt': 0,
+		'event': 0,
+		'total': 0
+	}
+}
+
 Plugin.prototype.alert = function (message = null, options = {}) {
 	message && (options.message = message)
 	return this.open(DIALOG_TYPES.ALERT, options)
