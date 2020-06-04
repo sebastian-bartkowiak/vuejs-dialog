@@ -105,7 +105,7 @@ Plugin.prototype.confirm = function (message = null, options = {}) {
 
 Plugin.prototype.event = function (message = null, options = {}) {
 	message && (options.message = message)
-	if(typeof options.eventData !== 'undefined' && typeof options.eventData.button_url !== 'undefined') options.cancelText = $trans('Dismiss')
+	if(options.eventData === null || (typeof options.eventData !== 'undefined' && typeof options.eventData.button_url !== 'undefined')) options.cancelText = $trans('Dismiss')
 	return this.open(DIALOG_TYPES.EVENT, options)
 }
 
